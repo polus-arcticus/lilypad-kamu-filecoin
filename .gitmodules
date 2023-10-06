@@ -1,0 +1,3 @@
+[submodule "filecoin-fvm-localnet"]
+	path = filecoin-fvm-localnet
+	url = ./filecoin-fvm-localnet/
