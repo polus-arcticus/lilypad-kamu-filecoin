@@ -13,6 +13,7 @@ import {BigInts} from "@zondax/filecoin-solidity/contracts/v0.8/utils/BigInts.so
 import {CBOR} from "solidity-cborutils/contracts/CBOR.sol";
 import {Misc} from "@zondax/filecoin-solidity/contracts/v0.8/utils/Misc.sol";
 import {FilAddresses} from "@zondax/filecoin-solidity/contracts/v0.8/utils/FilAddresses.sol";
+import 'hardhat/console.sol';
 
 using CBOR for CBOR.CBORBuffer;
 
