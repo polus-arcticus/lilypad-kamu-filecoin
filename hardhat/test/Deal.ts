@@ -4,7 +4,7 @@ import {
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs"
 import { expect } from "chai"
-import { ethers } from "hardhat"
+import { ethers, network } from "hardhat"
 import { deployDealClient, deployFilecoinMarketConsumer, filEstimateGas } from '../scripts/deploy'
 import exampleFile from './lighthouse.storage.json'
 import { CID } from 'multiformats/cid'
@@ -75,7 +75,6 @@ describe("Deal Client", function () {
     const gas = await filEstimateGas(
       dealClient.interface.encodeFunctionData("makeDealProposal", [dealRequestStruct])
     )
-    */
     //const nonce = await ethers.provider.getTransactionCount(accounts[0].address)
     //console.log('nonce', nonce)
     //encode dealRequestStruct as calldata for dealClient.makeDealProposal
@@ -128,25 +127,37 @@ describe("Deal Client", function () {
       }
     }
   ]
-  let asArray = Object.values(dealRequestStruct)
-  asArray[asArray.length-1] = Object.values(asArray[asArray.length -1])
-  console.log(asArray)
     const encoded = new ethers.AbiCoder().encode(abi, input)
     console.log('encoded', encoded)
-  const proposalTx = await dealClient.makeDealProposal(asArray, {
-    gasLimit: 1000000000,
-    //nonce: nonce
+    */
+    let asArray = Object.values(dealRequestStruct)
+    asArray[asArray.length - 1] = Object.values(asArray[asArray.length - 1])
+    console.log(asArray)
+
+    if (network.name === 'hardhat') {
+      const proposalTx = await dealClient.makeDealProposal(asArray, {
+        //gasLimit: 1000000000,
+        //nonce: nonce
+      })
+      await proposalTx.wait()
+
+    } else {
+      const proposalTx = await dealClient.makeDealProposal(asArray, {
+        gasLimit: 1000000000,
+        //nonce: nonce
+      })
+      await proposalTx.wait()
+
+    }
+    const deal = await dealClient.getDealByIndex(ethers.toBigInt(0))
+    console.log('deal', deal)
+    //await proposalTx.wait()
+
+
+
+
+
+
+
   })
-  await proposalTx.wait()
-  const deal = await dealClient.getDealByIndex(ethers.toBigInt(0))
-  console.log('deal', deal)
-  //await proposalTx.wait()
-
-
-
-
-
-
-
-})
 });
