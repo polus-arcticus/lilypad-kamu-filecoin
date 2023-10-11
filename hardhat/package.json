@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@glif/filecoin-address": "^2.0.43",
     "@zondax/filecoin-solidity": "^4.0.3",
     "dotenv": "^16.3.1",
     "hardhat": "^2.18.0",

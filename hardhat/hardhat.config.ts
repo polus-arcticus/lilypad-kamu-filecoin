@@ -19,14 +19,33 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  defaultNetwork: 'hardhat',
   networks: {
+    hardhat: {
+      chainId: 31337,
+      accounts: {
+        mnemonic: process.env.MNEMONIC
+      }
+    },
+    localhost: {
+      url: 'http://127.0.0.1:8545',
+      chainId: 31337,
+      accounts: {
+        mnemonic: process.env.MNEMONIC
+      }
+    },
     filTestnet: {
       url: 'http://127.0.0.1:1234/rpc/v1',
       chainId: 31415926,
       accounts: {
         mnemonic: process.env.MNEMONIC
       }
-    }
+    },
+    calibrationnet: {
+      chainId: 314159,
+      url: "https://api.calibration.node.glif.io/rpc/v1",
+      accounts: { mnemonic: process.env.MNEMONIC}
+  },
   }
 };
 
