@@ -86,43 +86,11 @@ export async function deployFilecoinMarketConsumer() {
 
   }
 }
-export async function deployEthereumDIDRegistry() {
-  const accounts = await hre.ethers.getSigners();
-  console.log('attempting to deploy filecoinmarkeconsumer')
-  const EthereumDIDRegistry = await hre.ethers.getContractFactory("EthereumDIDRegistry")
-  if (hre.network.name == 'hardhat') {
-    const ethereumDIDRegistry = await hre.ethers.deployContract("EthereumDIDRegistry");
-    //await filecoinMarketConsumer.waitForDeployment();
-    console.log(
-      `Deal Client Deployed at: ${ethereumDIDRegistry.target}`
-    );
-
-    return { ethereumDIDRegistryAddr: await ethereumDIDRegistry.getAddress() }
-
-  } else {
-    console.log('network name', hre.network.name)
-    const gas = await filEstimateGas(EthereumDIDRegistry.bytecode)
-    const nonce = await hre.ethers.provider.getTransactionCount(accounts[0].address)
-    const ethereumDIDRegistry = await hre.ethers.deployContract("EthereumDIDRegistry", {
-      gasLimit: gas.result,
-      nonce: nonce
-    });
-
-    //await filecoinMarketConsumer.waitForDeployment();
-    console.log(
-      `Deal Client Deployed at: ${ethereumDIDRegistry.target}`
-    );
-
-    return { ethereumDIDRegistryAddr: await ethereumDIDRegistry.getAddress() }
-
-  }
-}
 
 async function deploy() {
   // prevent duplicate run if using in npx hardhat test
   console.log(process.argv)
   if (process.argv[1].includes('deploy.ts')) {
-    await deployEthereumDIDRegistry()
     await deployDealClient()
     await deployFilecoinMarketConsumer()
   }
