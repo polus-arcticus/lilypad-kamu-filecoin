@@ -1,0 +1,63 @@
+kind: DatasetSnapshot
+version: 1
+content:
+  name: ca.bankofcanada.exchange-rates.daily
+  kind: root
+  metadata:
+    - kind: setPollingSource
+      fetch:
+        kind: url
+        url: https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/csv?start_date=2017-01-03
+      prepare:
+        - kind: pipe
+          command:
+            - sed
+            - -e
+            - 1,/OBSERVATIONS/d
+      read:
+        kind: csv
+        header: true
+        schema:
+          - date TIMESTAMP
+          - FXAUDCAD DOUBLE
+          - FXBRLCAD DOUBLE
+          - FXCNYCAD DOUBLE
+          - FXEURCAD DOUBLE
+          - FXHKDCAD DOUBLE
+          - FXINRCAD DOUBLE
+          - FXIDRCAD DOUBLE
+          - FXJPYCAD DOUBLE
+          - FXMYRCAD DOUBLE
+          - FXMXNCAD DOUBLE
+          - FXNZDCAD DOUBLE
+          - FXNOKCAD DOUBLE
+          - FXPENCAD DOUBLE
+          - FXRUBCAD DOUBLE
+          - FXSARCAD DOUBLE
+          - FXSGDCAD DOUBLE
+          - FXZARCAD DOUBLE
+          - FXKRWCAD DOUBLE
+          - FXSEKCAD DOUBLE
+          - FXCHFCAD DOUBLE
+          - FXTWDCAD DOUBLE
+          - FXTHBCAD DOUBLE
+          - FXTRYCAD DOUBLE
+          - FXGBPCAD DOUBLE
+          - FXUSDCAD DOUBLE
+          - FXVNDCAD DOUBLE
+      merge:
+        kind: ledger
+        primaryKey:
+          - date
+      preprocess:
+        kind: sql
+        engine: datafusion
+        query: |
+          select
+            date,
+            'USD' as currency_base,
+            'CAD' as currency_target,
+            FXUSDCAD as rate
+          from input
+    - kind: setVocab
+      eventTimeColumn: date
