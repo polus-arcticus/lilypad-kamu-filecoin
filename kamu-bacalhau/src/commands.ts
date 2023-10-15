@@ -18,36 +18,51 @@ export const add = async (filename: string) => {
 }
 
 export const pull = async (dataset: string) => {
- return await new Promise((res, rej) => {
-   exec(`kamu pull ${dataset}`, (error, stdout, stderr) => {
-     if (error) {
-       console.error(`Error executing command: ${error.message}`);
-       res(error.message)
-     }
-     if (stderr) {
-       console.error(`Command error: ${stderr}`);
-       res(stderr)
-     }
-     console.log(`Command output: ${stdout}`);
-     res(stdout)
-   })
- }) 
+  return await new Promise((res, rej) => {
+    exec(`kamu pull ${dataset}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing command: ${error.message}`);
+        res(error.message)
+      }
+      if (stderr) {
+        console.error(`Command error: ${stderr}`);
+        res(stderr)
+      }
+      console.log(`Command output: ${stdout}`);
+      res(stdout)
+    })
+  })
 }
 
 export const push = async (dataset: string, to: string) => {
-    return await new Promise((res, rej) => {
-      exec(`kamu push ${dataset} --to  ipns://${to}`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Error executing command: ${error.message}`);
-          res(error.message)
-        }
-        if (stderr) {
-          console.error(`Command error: ${stderr}`);
-          res(stderr)
-        }
-        console.log(`Command output: ${stdout}`);
-        res(stdout)
-      })
+  return await new Promise((res, rej) => {
+    exec(`kamu push ${dataset} --to  ipns://${to}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing command: ${error.message}`);
+        res(error.message)
+      }
+      if (stderr) {
+        console.error(`Command error: ${stderr}`);
+        res(stderr)
+      }
+      console.log(`Command output: ${stdout}`);
+      res(stdout)
     })
-  
+  })
+}
+export const pin = async (cid: string) => {
+  return await new Promise((res, rej) => {
+    exec(`ipfs pin add ${cid}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing command: ${error.message}`);
+        res(error.message)
+      }
+      if (stderr) {
+        console.error(`Command error: ${stderr}`);
+        res(stderr)
+      }
+      console.log(`Command output: ${stdout}`);
+      res(stdout)
+    })
+  })
 }

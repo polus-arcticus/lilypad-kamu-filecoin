@@ -30,7 +30,7 @@ test('post a yaml manifest', async (t) => {
 
   const res2 = await app.inject({
     method: 'POST',
-    url: `/manifest/pull/ca.bankofcanada.exchange-rates.daily`,
+    url: `/manifest/ca.bankofcanada.exchange-rates.daily/pull`,
   })
     console.log('res2', res2.body)
     t.match(res2.body, '1 dataset(s) updated')
@@ -43,7 +43,7 @@ test('post a yaml manifest', async (t) => {
     console.log('address', address)
   const res3 = await app.inject({
     method: 'POST',
-    url: `/manifest/push/ca.bankofcanada.exchange-rates.daily/${address}`,
+    url: `/manifest/ca.bankofcanada.exchange-rates.daily/push/${address}`,
   })
   console.log('res3', res3.body)
   t.match(res3.body, '1 dataset(s) pushed')

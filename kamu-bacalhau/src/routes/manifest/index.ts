@@ -16,29 +16,29 @@ const manifest: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   })
 
   interface PullParams {
-    dataset: string
+    manifest: string
   }
-  fastify.post('/pull/:dataset', async (
+  fastify.post('/:manifest/pull', async (
     request: FastifyRequest<{ Params: PullParams }>,
     response
   ) => {
     const params: PullParams = request.params
-    const dataset: string = params.dataset
-    if (!dataset) return response.status(500).send('dataset is required')
-    return await pull(dataset)
+    const manifest: string = params.manifest
+    if (!manifest) return response.status(500).send('dataset is required')
+    return await pull(manifest)
   })
   
   interface PushParams extends PullParams {
     to: string
   }
-  fastify.post('/push/:dataset/:to', async (
+  fastify.post('/:manifest/push/:to', async (
     request: FastifyRequest<{ Params: PushParams }>,
     response
   ) => {
-    const {dataset, to}: PushParams = request.params
-    if (!dataset) return response.status(500).send('dataset is required')
+    const {manifest, to}: PushParams = request.params
+    if (!manifest) return response.status(500).send('dataset is required')
     if (!to) return response.status(500).send('please select where to push (ipfs)')
-    return await push(dataset, to)
+    return await push(manifest, to)
   })
 }
 
