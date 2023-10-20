@@ -1,4 +1,9 @@
 FROM node:20.7-buster
+RUN apt-get update && apt-get install build-essential curl -y
+RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0-linux-x86_64.sh \
+    && chmod +x cmake-3.20.0-linux-x86_64.sh \
+    && ./cmake-3.20.0-linux-x86_64.sh --prefix=/usr/local --exclude-subdir --skip-license \
+    && rm cmake-3.20.0-linux-x86_64.sh
 WORKDIR /app
 COPY start.sh .
 RUN wget https://dist.ipfs.tech/kubo/v0.22.0/kubo_v0.22.0_linux-amd64.tar.gz
@@ -8,9 +13,8 @@ RUN cd kubo && bash install.sh
 RUN curl -s "https://get.kamu.dev" | sh
 RUN ln -s /root/.local/bin/kamu /usr/local/bin/kamu
 
-COPY package.json .
-
-RUN npm install
+#COPY package.json .
+#RUN npm install
 
 EXPOSE 3000
 # Swarm TCP; should be exposed to the public
