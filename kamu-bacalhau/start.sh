@@ -17,10 +17,12 @@ while true; do
   fi
 done
 kamu add ./test/ca.bankofcanada.exchange-rates.daily.yaml
+kamu pull ca.bankofcanada.exchange-rates.daily
 BAFY=$(kamu system ipfs add ca.bankofcanada.exchange-rates.daily)
 echo $BAFY
 mkdir /outputs
 echo $BAFY > /outputs/output.txt
+tail -f /dev/null
 #nohup kamu system api-server --http-port 3080 --address 0.0.0.0 &
 #nohup kamu ui --http-port 36083 --address 0.0.0.0 &
 #npm run dev
